@@ -22,17 +22,29 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.gadsleaderboard;
+package io.audioshinigami.data_gads.network;
 
-import androidx.appcompat.app.AppCompatActivity;
+import java.util.List;
 
-import android.os.Bundle;
+import io.audioshinigami.data_gads.source.UserIq;
+import io.audioshinigami.data_gads.source.UserTime;
+import retrofit2.Call;
+import retrofit2.http.GET;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public interface GadsApiService {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-    }
+    String GADS_HOURS = "/api/hours";
+    String GADS_IQ = "/api/skilliq";
+
+    /**
+     * @return leader board list based on hours
+     */
+    @GET(GADS_HOURS)
+    Call<List<UserTime>> getUserHours();
+
+    /**
+     * @return leader board list based on IQ
+     */
+    @GET(GADS_IQ)
+    Call<List<UserIq>> getUserIqs();
 }

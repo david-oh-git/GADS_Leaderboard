@@ -22,17 +22,32 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.gadsleaderboard;
+package io.audioshinigami.data_gads.source;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.gson.annotations.SerializedName;
 
-import android.os.Bundle;
+/**
+ *  POJO representing an item of data from API response
+ */
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class UserTime {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
+    @SerializedName("name")
+    public String name;
+
+    @SerializedName("hours")
+    public int hours;
+
+    @SerializedName("country")
+    public String country;
+
+    @SerializedName("badgeUrl")
+    public String badgeUrl;
+
+    public UserTime(String name, int hours, String country, String badgeUrl){
+        this.name = name;
+        this.hours = hours;
+        this.country = country;
+        this.badgeUrl = badgeUrl;
     }
 }

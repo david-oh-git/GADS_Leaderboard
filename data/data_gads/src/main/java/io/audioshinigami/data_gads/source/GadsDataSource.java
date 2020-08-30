@@ -22,17 +22,15 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.gadsleaderboard;
+package io.audioshinigami.data_gads.source;
 
-import androidx.appcompat.app.AppCompatActivity;
+import java.util.List;
 
-import android.os.Bundle;
+import io.reactivex.rxjava3.core.Single;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public interface GadsDataSource {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-    }
+    Single<List<UserTime>> getUserHours();
+
+    Single<List<UserIq>> getUserIqs();
 }

@@ -22,17 +22,32 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.gadsleaderboard;
+package io.audioshinigami.data_gads.source;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.gson.annotations.SerializedName;
 
-import android.os.Bundle;
+/**
+ *  POJO representing an item of data from API response for IQ
+ */
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class UserIq {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
+    @SerializedName("name")
+    public String name;
+
+    @SerializedName("score")
+    public int score;
+
+    @SerializedName("country")
+    public String country;
+
+    @SerializedName("badgeUrl")
+    public String badgeUrl;
+
+    public UserIq( String name, int score, String country, String badgeUrl){
+        this.name = name;
+        this.score = score;
+        this.country = country;
+        this.badgeUrl = badgeUrl;
     }
 }
