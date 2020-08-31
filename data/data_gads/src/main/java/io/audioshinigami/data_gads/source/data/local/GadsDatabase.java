@@ -22,41 +22,29 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.source;
+package io.audioshinigami.data_gads.source.data.local;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import android.content.Context;
 
-import com.google.gson.annotations.SerializedName;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
-/**
- *  POJO representing an item of data from API response
- *  also Entity for Room DB
- */
+import io.audioshinigami.data_gads.source.UserIq;
+import io.audioshinigami.data_gads.source.UserTime;
 
-@Entity( tableName = "io.audioshinigami.data_gads.source.time_table_name")
-public class UserTime {
+@Database(entities = {UserIq.class, UserTime.class}, version = 1)
+public abstract class GadsDatabase extends RoomDatabase {
 
-    @PrimaryKey(autoGenerate = true)
-    public int uid;
+    abstract UserIQDao userIQDao();
 
-    @SerializedName("name")
-    public String name;
+    abstract UserTimeDao userTimeDao();
 
-    @SerializedName("hours")
-    public int hours;
-
-    @SerializedName("country")
-    public String country;
-
-    @SerializedName("badgeUrl")
-    public String badgeUrl;
-
-    public UserTime(String name, int hours, String country, String badgeUrl){
-        this.name = name;
-        this.hours = hours;
-        this.country = country;
-        this.badgeUrl = badgeUrl;
-        this.uid = 0;
+    public static GadsDatabase providegadsDatabase(Context context){
+        return Room.databaseBuilder(
+                context.getApplicationContext(),
+                GadsDatabase.class,
+                "gads_db"
+        ).build();
     }
 }

@@ -22,41 +22,21 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.source;
+package io.audioshinigami.data_gads.source.data.local;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import androidx.room.Dao;
+import androidx.room.Query;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
-/**
- *  POJO representing an item of data from API response
- *  also Entity for Room DB
- */
+import io.audioshinigami.data_gads.source.UserTime;
 
-@Entity( tableName = "io.audioshinigami.data_gads.source.time_table_name")
-public class UserTime {
+@Dao
+public abstract class UserTimeDao implements BaseDao<UserTime> {
 
-    @PrimaryKey(autoGenerate = true)
-    public int uid;
+    @Query("SELECT * FROM `io.audioshinigami.data_gads.source.time_table_name` ORDER BY uid ASC")
+    abstract public List<UserTime> getTimeList();
 
-    @SerializedName("name")
-    public String name;
-
-    @SerializedName("hours")
-    public int hours;
-
-    @SerializedName("country")
-    public String country;
-
-    @SerializedName("badgeUrl")
-    public String badgeUrl;
-
-    public UserTime(String name, int hours, String country, String badgeUrl){
-        this.name = name;
-        this.hours = hours;
-        this.country = country;
-        this.badgeUrl = badgeUrl;
-        this.uid = 0;
-    }
+    @Query("DELETE FROM `io.audioshinigami.data_gads.source.time_table_name`")
+    abstract public void deleteAll();
 }

@@ -24,23 +24,37 @@
 
 package io.audioshinigami.data_gads.source;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
+
 
 /**
  *  POJO representing an item of data from API response for IQ
+ *  also Entity for Room DB
  */
 
+@Entity( tableName = "io.audioshinigami.data_gads.source.iq_table_name" )
 public class UserIq {
 
+    @PrimaryKey(autoGenerate = true)
+    public int uid;
+
+    @ColumnInfo
     @SerializedName("name")
     public String name;
 
+    @ColumnInfo
     @SerializedName("score")
     public int score;
 
+    @ColumnInfo
     @SerializedName("country")
     public String country;
 
+    @ColumnInfo
     @SerializedName("badgeUrl")
     public String badgeUrl;
 
@@ -49,5 +63,8 @@ public class UserIq {
         this.score = score;
         this.country = country;
         this.badgeUrl = badgeUrl;
+        this.uid = 0;
+
     }
+
 }

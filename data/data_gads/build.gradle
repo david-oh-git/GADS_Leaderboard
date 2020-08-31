@@ -68,5 +68,28 @@ dependencies {
     // rxjava3
     implementation deps.rxandroid
     implementation deps.rxjava
+    // Room DB
+    implementation deps.room_db
+    annotationProcessor deps.room_db_compiler
+
+
+    // Room test
+    testImplementation deps.room_test_helpers
+    // junit5
+    testImplementation deps.junit5_runner
+    testImplementation deps.junit5_api
+    testImplementation deps.junit5_params
+    testRuntimeOnly deps.junit5_engine
+    testRuntimeOnly deps.junit5_vintage
+    // Mockito
+    testImplementation deps.mockito
+    // Robolectric
+    testImplementation deps.robolectric
+    testImplementation deps.core_robolectric
+    // truth
+    testImplementation deps.truth
+    // hamcrest
+    testImplementation deps.hamcrest_lib
+    testImplementation deps.hamcrest
 
 }

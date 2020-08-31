@@ -22,41 +22,49 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.source;
+package io.audioshinigami.data_gads.source.data.local;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Update;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 /**
- *  POJO representing an item of data from API response
- *  also Entity for Room DB
+ *  BaseDao for Room Db
  */
 
-@Entity( tableName = "io.audioshinigami.data_gads.source.time_table_name")
-public class UserTime {
+@Dao
+public interface BaseDao<T> {
 
-    @PrimaryKey(autoGenerate = true)
-    public int uid;
+    /**
+     *  save entity in database
+     * @param obj class to be saved
+     */
+    @Insert
+    void save(T obj);
 
-    @SerializedName("name")
-    public String name;
+    /**
+     *  save list of entity in database
+     * @param data list to be saved
+     */
+    @Insert
+    void saveAll(List<T> data);
 
-    @SerializedName("hours")
-    public int hours;
+    /**
+     *  update entity in database
+     * @param obj class to be updated
+     * @return the number of entity updated
+     */
+    @Update
+    int update(T obj);
 
-    @SerializedName("country")
-    public String country;
+    /**
+     * delete an object from database
+     * @param obj object to be deleted
+     */
+    @Delete
+    void delete(T obj);
 
-    @SerializedName("badgeUrl")
-    public String badgeUrl;
-
-    public UserTime(String name, int hours, String country, String badgeUrl){
-        this.name = name;
-        this.hours = hours;
-        this.country = country;
-        this.badgeUrl = badgeUrl;
-        this.uid = 0;
-    }
 }
