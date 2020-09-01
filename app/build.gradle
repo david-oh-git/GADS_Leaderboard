@@ -59,6 +59,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
+    implementation project(':data:data_gads')
 
     implementation deps.appcompat
     implementation deps.constraintlayout

@@ -79,6 +79,7 @@ buildscript {
             gson: "com.google.code.gson:gson:$versions.gson",
             retrofit: "com.squareup.retrofit2:retrofit:$versions.retrofit",
             retrofit_gson: "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+            retrofit_rxjava_adaptor: "com.squareup.retrofit2:adapter-rxjava3:$versions.retrofit",
             rxandroid: "io.reactivex.rxjava3:rxandroid:$versions.rxandroid" ,
             rxjava: "io.reactivex.rxjava3:rxjava:$versions.rxjava" ,
             room_db: "androidx.room:room-runtime:$versions.room_db" ,

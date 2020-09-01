@@ -65,6 +65,7 @@ dependencies {
     // retrofit
     implementation deps.retrofit
     implementation deps.retrofit_gson
+    implementation deps.retrofit_rxjava_adaptor
     // rxjava3
     implementation deps.rxandroid
     implementation deps.rxjava

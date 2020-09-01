@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.source.data.local;
+package io.audioshinigami.data_gads.data.source.local;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

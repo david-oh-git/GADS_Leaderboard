@@ -22,16 +22,13 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.source.data.local;
+package io.audioshinigami.data_gads.data.source.local;
 
 
 import android.content.Context;
 import android.os.Build;
 
-import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
-
-import com.google.common.truth.Truth;
 
 import org.junit.After;
 import org.junit.Before;
@@ -41,9 +38,12 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import io.audioshinigami.data_gads.source.UserIq;
-import io.audioshinigami.data_gads.source.UserTime;
+import io.audioshinigami.data_gads.data.UserIq;
+import io.audioshinigami.data_gads.data.UserTime;
+import io.audioshinigami.data_gads.data.source.local.GadsDatabase;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -57,9 +57,7 @@ public class GadsDatabaseTest {
     @Before
    public void init(){
         Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(
-                context, GadsDatabase.class
-        ).allowMainThreadQueries().build();
+        db = GadsDatabase.provideInMemoryDatabase(context);
 
    }
 
@@ -138,5 +136,68 @@ public class GadsDatabaseTest {
         assertThat(userHourListResult.get(0).score).isEqualTo(karabo.score);
         assertThat(userHourListResult.get(0).country).isEqualTo(karabo.country);
         assertThat(userHourListResult.get(0).badgeUrl).isEqualTo(karabo.badgeUrl);
+    }
+
+    @Test
+    public void saveAllUserTimeDb_ConfirmSaved(){
+        // Arrange: create userTime data & save to DB
+        UserTime karabo = new UserTime("Karabo Makeba", 19, "South Africa",
+                "http://whogobuy.com/store/karabo1.jpg");
+        UserTime efe = new UserTime("efe kabasa", 23, "Nigeria",
+                "http://whogobuy.com/store/efe101.jpg");
+        UserTime chika = new UserTime("Chika Okporoko", 27,"Kenya",
+                "http://whogobuy.com/store/karabo1.jpg" );
+        List<UserTime> users = Stream.of(karabo,efe, chika).collect(Collectors.toList());
+
+        db.userTimeDao().saveAll(users);
+
+        // Act: get all userTime data from db
+        List<UserTime> userHourListResult = db.userTimeDao().getTimeList();
+
+        // Assert:
+        assertThat(userHourListResult.isEmpty()).isEqualTo(false);
+        assertThat(userHourListResult.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void deleteUserIqDb_ConfirmSaved(){
+        // Arrange: create userTime data & save to DB
+        UserIq karabo = new UserIq("Karabo Makeba", 19, "South Africa",
+                "http://whogobuy.com/store/karabo1.jpg");
+        UserIq efe = new UserIq("efe kabasa", 23, "Nigeria",
+                "http://whogobuy.com/store/efe101.jpg");
+
+        db.userIQDao().save(karabo);
+        db.userIQDao().save(efe);
+
+        // Act: delete all then get all userIq data from db
+        db.userIQDao().deleteAll();
+        List<UserIq> userIqList = db.userIQDao().getIqList();
+
+        // Assert:
+        assertThat(userIqList.isEmpty()).isEqualTo(true);
+        assertThat(userIqList.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void deleteUserTimeDb_ConfirmSaved(){
+        // Arrange: create userTime data & save to DB
+        UserTime karabo = new UserTime("Karabo Makeba", 19, "South Africa",
+                "http://whogobuy.com/store/karabo1.jpg");
+        UserTime efe = new UserTime("efe kabasa", 23, "Nigeria",
+                "http://whogobuy.com/store/efe101.jpg");
+        UserTime chika = new UserTime("Chika Okporoko", 27,"Kenya",
+                "http://whogobuy.com/store/karabo1.jpg" );
+        List<UserTime> users = Stream.of(karabo,efe, chika).collect(Collectors.toList());
+
+        db.userTimeDao().saveAll(users);
+
+        // Act: delete all then get all userTime data from db
+        db.userTimeDao().deleteAll();
+        List<UserTime> userHourListResult = db.userTimeDao().getTimeList();
+
+        // Assert:
+        assertThat(userHourListResult.isEmpty()).isEqualTo(true);
+        assertThat(userHourListResult.size()).isEqualTo(0);
     }
 }

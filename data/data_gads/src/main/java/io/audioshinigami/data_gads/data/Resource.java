@@ -22,49 +22,29 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.source;
+package io.audioshinigami.data_gads.data;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+public class Resource<T> {
 
-import com.google.gson.annotations.SerializedName;
+    final Status status;
+    final T data;
+    final String message;
 
-
-/**
- *  POJO representing an item of data from API response for IQ
- *  also Entity for Room DB
- */
-
-@Entity( tableName = "io.audioshinigami.data_gads.source.iq_table_name" )
-public class UserIq {
-
-    @PrimaryKey(autoGenerate = true)
-    public int uid;
-
-    @ColumnInfo
-    @SerializedName("name")
-    public String name;
-
-    @ColumnInfo
-    @SerializedName("score")
-    public int score;
-
-    @ColumnInfo
-    @SerializedName("country")
-    public String country;
-
-    @ColumnInfo
-    @SerializedName("badgeUrl")
-    public String badgeUrl;
-
-    public UserIq( String name, int score, String country, String badgeUrl){
-        this.name = name;
-        this.score = score;
-        this.country = country;
-        this.badgeUrl = badgeUrl;
-        this.uid = 0;
-
+    private Resource(Status status, T data, String message){
+        this.status = status;
+        this.data = data;
+        this.message = message;
     }
 
+    public static <S> Resource<S> success(S data){
+        return new Resource<>(Status.SUCCESS, data, null);
+    }
+
+    public static <E> Resource<E> error(String message, E data){
+        return new Resource<>(Status.ERROR, data, message);
+    }
+
+    public static <L> Resource<L> loading(L data){
+        return new Resource<>(Status.LOADING, data, null);
+    }
 }

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.source.data.local;
+package io.audioshinigami.data_gads.data.source.local;
 
 import android.content.Context;
 
@@ -30,15 +30,15 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import io.audioshinigami.data_gads.source.UserIq;
-import io.audioshinigami.data_gads.source.UserTime;
+import io.audioshinigami.data_gads.data.UserIq;
+import io.audioshinigami.data_gads.data.UserTime;
 
 @Database(entities = {UserIq.class, UserTime.class}, version = 1)
 public abstract class GadsDatabase extends RoomDatabase {
 
-    abstract UserIQDao userIQDao();
+    abstract public UserIQDao userIQDao();
 
-    abstract UserTimeDao userTimeDao();
+    abstract public UserTimeDao userTimeDao();
 
     public static GadsDatabase providegadsDatabase(Context context){
         return Room.databaseBuilder(
@@ -46,5 +46,11 @@ public abstract class GadsDatabase extends RoomDatabase {
                 GadsDatabase.class,
                 "gads_db"
         ).build();
+    }
+
+    public static GadsDatabase provideInMemoryDatabase(Context context){
+        return Room.inMemoryDatabaseBuilder(
+                context, GadsDatabase.class
+        ).allowMainThreadQueries().build();
     }
 }

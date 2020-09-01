@@ -22,29 +22,22 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.network;
+package io.audioshinigami.data_gads.utility;
 
-import java.util.List;
+import android.util.Log;
 
-import io.audioshinigami.data_gads.data.UserIq;
-import io.audioshinigami.data_gads.data.UserTime;
-import retrofit2.Call;
-import retrofit2.http.GET;
+import io.audioshinigami.data_gads.BuildConfig;
 
-public interface GadsApiService {
+/**
+ *  helper class to log only in debug mode
+ */
 
-    String GADS_HOURS = "/api/hours";
-    String GADS_IQ = "/api/skilliq";
+public class LogHelper {
 
-    /**
-     * @return leader board list based on hours
-     */
-    @GET(GADS_HOURS)
-    Call<List<UserTime>> getUserHours();
+    private LogHelper(){}
 
-    /**
-     * @return leader board list based on IQ
-     */
-    @GET(GADS_IQ)
-    Call<List<UserIq>> getUserIqs();
+    public static void log(String tag, String message){
+        if(BuildConfig.DEBUG)
+            Log.d(tag,message);
+    }
 }

@@ -22,29 +22,10 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.network;
+package io.audioshinigami.data_gads.data;
 
-import java.util.List;
-
-import io.audioshinigami.data_gads.data.UserIq;
-import io.audioshinigami.data_gads.data.UserTime;
-import retrofit2.Call;
-import retrofit2.http.GET;
-
-public interface GadsApiService {
-
-    String GADS_HOURS = "/api/hours";
-    String GADS_IQ = "/api/skilliq";
-
-    /**
-     * @return leader board list based on hours
-     */
-    @GET(GADS_HOURS)
-    Call<List<UserTime>> getUserHours();
-
-    /**
-     * @return leader board list based on IQ
-     */
-    @GET(GADS_IQ)
-    Call<List<UserIq>> getUserIqs();
+public enum Status {
+    SUCCESS,
+    ERROR,
+    LOADING
 }

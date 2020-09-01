@@ -22,29 +22,22 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.network;
+package io.audioshinigami.data_gads.data.source.local;
+
+
+import androidx.room.Dao;
+import androidx.room.Query;
 
 import java.util.List;
 
 import io.audioshinigami.data_gads.data.UserIq;
-import io.audioshinigami.data_gads.data.UserTime;
-import retrofit2.Call;
-import retrofit2.http.GET;
 
-public interface GadsApiService {
+@Dao
+public abstract class UserIQDao implements BaseDao<UserIq> {
 
-    String GADS_HOURS = "/api/hours";
-    String GADS_IQ = "/api/skilliq";
+    @Query("SELECT * FROM `io.audioshinigami.data_gads.data.source.iq_table_name` ORDER BY uid ASC ")
+    abstract public List<UserIq> getIqList();
 
-    /**
-     * @return leader board list based on hours
-     */
-    @GET(GADS_HOURS)
-    Call<List<UserTime>> getUserHours();
-
-    /**
-     * @return leader board list based on IQ
-     */
-    @GET(GADS_IQ)
-    Call<List<UserIq>> getUserIqs();
+    @Query("DELETE FROM `io.audioshinigami.data_gads.data.source.iq_table_name`")
+    abstract public void deleteAll();
 }

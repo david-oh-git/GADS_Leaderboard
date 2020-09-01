@@ -22,22 +22,33 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.source.data.local;
-
-
-import androidx.room.Dao;
-import androidx.room.Query;
+package io.audioshinigami.data_gads.data;
 
 import java.util.List;
 
-import io.audioshinigami.data_gads.source.UserIq;
+import io.reactivex.rxjava3.core.Single;
 
-@Dao
-public abstract class UserIQDao implements BaseDao<UserIq> {
+public interface GadsDataSource<T,I> {
 
-    @Query("SELECT * FROM `io.audioshinigami.data_gads.source.iq_table_name` ORDER BY uid ASC ")
-    abstract public List<UserIq> getIqList();
+    Single<List<UserTime>> getUserHours();
 
-    @Query("DELETE FROM `io.audioshinigami.data_gads.source.iq_table_name`")
-    abstract public void deleteAll();
+    Single<List<UserIq>> getUserIqs();
+
+
+    void saveUserTime(T obj);
+
+    void saveUserIq(I obj);
+
+    void deleteUserTime(T obj);
+
+    void deleteUserIq(I obj);
+
+    void saveUserIqList(List<I> userIqList);
+
+    void saveUserTimeList(List<T> userTimeList);
+
+    void deleteUserHours();
+
+    void deleteUserIqs();
+
 }

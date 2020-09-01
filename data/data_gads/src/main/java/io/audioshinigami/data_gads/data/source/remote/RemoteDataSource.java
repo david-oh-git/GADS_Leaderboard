@@ -22,25 +22,25 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.data_gads.source.data.remote;
+package io.audioshinigami.data_gads.data.source.remote;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import io.audioshinigami.data_gads.data.Resource;
 import io.audioshinigami.data_gads.network.GadsApiService;
-import io.audioshinigami.data_gads.source.GadsDataSource;
-import io.audioshinigami.data_gads.source.UserIq;
-import io.audioshinigami.data_gads.source.UserTime;
+import io.audioshinigami.data_gads.data.GadsDataSource;
+import io.audioshinigami.data_gads.data.UserIq;
+import io.audioshinigami.data_gads.data.UserTime;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleEmitter;
-import io.reactivex.rxjava3.core.SingleOnSubscribe;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RemoteDataSource implements GadsDataSource {
+public class RemoteDataSource implements GadsDataSource<UserTime,UserIq> {
 
     private GadsApiService apiService;
 
@@ -57,12 +57,12 @@ public class RemoteDataSource implements GadsDataSource {
                 @Override
                 public void onResponse(@NotNull Call<List<UserTime>> call, @NotNull Response<List<UserTime>> response) {
 
-                    emitter.onSuccess(response.body());
+                    emitter.onSuccess( response.body() );
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<List<UserTime>> call, @NotNull Throwable t) {
-                    emitter.onError(t);
+                    emitter.onError( t);
                 }
             });
         });
@@ -87,7 +87,47 @@ public class RemoteDataSource implements GadsDataSource {
         });
     }
 
-//    TODO refactor later
+    @Override
+    public void saveUserTime(UserTime obj) {
+        // Not required
+    }
+
+    @Override
+    public void saveUserIq(UserIq obj) {
+        // Not required
+    }
+
+    @Override
+    public void deleteUserTime(UserTime obj) {
+        // Not required
+    }
+
+    @Override
+    public void deleteUserIq(UserIq obj) {
+        // Not required
+    }
+
+    @Override
+    public void saveUserIqList(List<UserIq> userIqList) {
+        // Not required
+    }
+
+    @Override
+    public void saveUserTimeList(List<UserTime> userTimeList) {
+        // Not required
+    }
+
+    @Override
+    public void deleteUserHours() {
+        // Not required
+    }
+
+    @Override
+    public void deleteUserIqs() {
+        // Not required
+    }
+
+    //    TODO refactor later
 //    private <T> Single<List<T>> apiResponse( Class<T> classType){
 //        return Single.create( emitter -> {
 //            if(classType.isAssignableFrom(UserTime.class)){
