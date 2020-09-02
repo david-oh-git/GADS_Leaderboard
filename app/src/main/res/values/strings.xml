@@ -24,4 +24,7 @@
 
 <resources>
     <string name="app_name">GADS Leaderboard</string>
+    <string name="splash_screen_img_desc">Gads image for splash screen</string>
+    <string name="learning_tab_tile">Learning Leaders</string>
+    <string name="iq_tab_title">Skill IQ Leaders</string>
 </resources>

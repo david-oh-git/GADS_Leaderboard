@@ -60,8 +60,11 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     implementation project(':data:data_gads')
+    implementation project(':features:feature_timelist')
 
     implementation deps.appcompat
     implementation deps.constraintlayout
+    implementation deps.material
+    implementation deps.viewpager2
 
 }

@@ -15,42 +15,42 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
 
-package io.audioshinigami.gadsleaderboard;
+package io.audioshinigami.gadsleaderboard.home;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import androidx.appcompat.app.AppCompatActivity;
+import io.audioshinigami.feature_timelist.LearningListFragment;
 
-import io.audioshinigami.gadsleaderboard.home.HomeActivity;
+public class HomePagerAdaptor extends FragmentStateAdapter {
 
-public class SplashScreenActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-
+    public HomePagerAdaptor(@NonNull FragmentActivity fragmentActivity) {
+        super(fragmentActivity);
     }
 
+    @NonNull
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        final Handler handler = new Handler();
-
-        handler.postDelayed(this::launchHome, 1000);
+    public Fragment createFragment(int position) {
+        switch (position){
+            case 0:
+                return LearningListFragment.newInstance();
+            default:
+                return null;
+        }
     }
 
-    private void launchHome(){
-        startActivity( new Intent(this, HomeActivity.class));
+
+    @Override
+    public int getItemCount() {
+        return 1;
     }
 }

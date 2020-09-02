@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ MIT License
   ~
@@ -23,23 +22,8 @@
   ~ SOFTWARE.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/black"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SplashScreenActivity">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.audioshinigami.feature_timelist">
 
-    <ImageView
-        android:contentDescription="@string/splash_screen_img_desc"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/gads"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    /
+</manifest>
