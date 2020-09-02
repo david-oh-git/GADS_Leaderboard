@@ -25,4 +25,11 @@
 <resources>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_image_desc">Image of the user</string>
+
+    <plurals name="user_details_msg">
+        <item quantity="zero"> learning hour, </item>
+        <item quantity="one"> learning hour, </item>
+        <item quantity="other"> learning hours, </item>
+    </plurals>
 </resources>

@@ -55,7 +55,6 @@ buildscript {
             hamcrest: '2.2',
             robolectric: '4.3.1',
             material: '1.2.0',
-            viewpager2: '1.0.0'
     ]
 
     dependencies {
@@ -93,8 +92,7 @@ buildscript {
             truth: "com.google.truth:truth:$versions.truth" ,
             hamcrest_lib: "org.hamcrest:hamcrest-library:$versions.hamcrest",
             hamcrest: "org.hamcrest:hamcrest:$versions.hamcrest" ,
-            material: "com.google.android.material:material:$versions.material" ,
-            viewpager2: "androidx.viewpager2:viewpager2:$versions.viewpager2"
+            material: "com.google.android.material:material:$versions.material"
     ]
 }
 

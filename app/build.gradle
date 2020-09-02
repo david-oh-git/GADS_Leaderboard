@@ -65,6 +65,5 @@ dependencies {
     implementation deps.appcompat
     implementation deps.constraintlayout
     implementation deps.material
-    implementation deps.viewpager2
 
 }

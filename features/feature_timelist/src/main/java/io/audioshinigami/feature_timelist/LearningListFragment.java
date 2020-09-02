@@ -77,7 +77,7 @@ public class LearningListFragment extends Fragment {
      * this fragment using the provided parameters.
      */
     public static LearningListFragment newInstance() {
-        
+
 //        Bundle args = new Bundle();
 //        fragment.setArguments(args);
         return new LearningListFragment();
