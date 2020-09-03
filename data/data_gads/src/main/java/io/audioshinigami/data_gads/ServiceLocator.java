@@ -25,12 +25,10 @@
 package io.audioshinigami.data_gads;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.room.Room;
 
-import java.util.List;
-
+import io.audioshinigami.data_gads.background.BackGroundExecutor;
 import io.audioshinigami.data_gads.data.DefaultRepository;
 import io.audioshinigami.data_gads.data.GadsDataSource;
 import io.audioshinigami.data_gads.data.GadsRepository;
@@ -40,13 +38,6 @@ import io.audioshinigami.data_gads.data.source.local.GadsDatabase;
 import io.audioshinigami.data_gads.data.source.local.LocalDataSource;
 import io.audioshinigami.data_gads.data.source.remote.RemoteDataSource;
 import io.audioshinigami.data_gads.network.ApiFactory;
-import io.audioshinigami.data_gads.utility.LogHelper;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.observers.DisposableSingleObserver;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  *  provide single instance object Instance
@@ -68,7 +59,8 @@ public class ServiceLocator {
 
             repository = new DefaultRepository(
                     createLocalGadsDataSource(context),
-                    createRemoteGadsDataSource()
+                    createRemoteGadsDataSource() ,
+                    new BackGroundExecutor()
             );
 
             return repository;
@@ -95,48 +87,6 @@ public class ServiceLocator {
 
     private static GadsDataSource<UserTime, UserIq> createRemoteGadsDataSource(){
         return new RemoteDataSource(ApiFactory.provideGadsApi());
-    }
-
-    public static void test(Context context){
-        provideGadsRepository(context).getUserHours(false)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(new DisposableSingleObserver<List<UserTime>>() {
-                    @Override
-                    public void onSuccess(@NonNull List<UserTime> userTimes) {
-                        LogHelper.log(TAG, " data gotten successfully");
-
-                        for (UserTime userTime: userTimes){
-                            LogHelper.log(TAG, userTime.country);
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        LogHelper.log(TAG, " Error getting data");
-                    }
-                });
-
-        provideGadsRepository(context).getUserIqs(false)
-                .subscribeOn(Schedulers.io())
-                .observeOn( Schedulers.io())
-                .subscribe(new DisposableSingleObserver<List<UserIq>>() {
-                    @Override
-                    public void onSuccess(@NonNull List<UserIq> userIqs) {
-                        LogHelper.log(TAG, " data gotten successfully");
-
-                        for (UserIq userIq: userIqs){
-                            LogHelper.log(TAG, userIq.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        LogHelper.log(TAG, " Error getting data");
-                    }
-                });
-
     }
 
 }

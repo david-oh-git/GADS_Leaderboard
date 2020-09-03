@@ -52,6 +52,7 @@
 
         <TextView
             android:id="@+id/user_name"
+            android:textStyle="bold"
             android:text="@{ user.name }"
             app:layout_constraintStart_toEndOf="@id/user_image"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
@@ -63,7 +64,7 @@
 
         <TextView
             android:id="@+id/user_details"
-            android:text="@{ user.hours + @plurals/user_details_msg(user.hours) + user.country + `.`}"
+            android:text="@{ user.hours + ` ` +@plurals/user_details_msg(user.hours) + ` `+ user.country + `.`}"
             app:layout_constraintStart_toEndOf="@id/user_image"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toBottomOf="@id/user_name"

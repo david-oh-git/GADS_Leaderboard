@@ -63,5 +63,13 @@ dependencies {
 
     implementation deps.constraintlayout
     implementation deps.material
+    // rxjava3
+    implementation deps.rxandroid
+    implementation deps.rxjava
+    // Glide
+    implementation deps.glide
+    annotationProcessor deps.glide_compiler
+    // swipefreshlayout
+    implementation deps.swipe_refresh_layout
 
 }

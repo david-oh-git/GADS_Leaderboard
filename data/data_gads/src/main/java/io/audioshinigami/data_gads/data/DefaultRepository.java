@@ -25,20 +25,26 @@
 package io.audioshinigami.data_gads.data;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
+import io.audioshinigami.data_gads.utility.LogHelper;
 import io.reactivex.rxjava3.core.Single;
 
 public class DefaultRepository implements GadsRepository{
 
     private final GadsDataSource<UserTime, UserIq> localDataSource;
     private final GadsDataSource<UserTime, UserIq> remoteDataSource;
+    private final Executor executor;
+    private final String TAG = DefaultRepository.class.getSimpleName();
 
     public DefaultRepository(
             GadsDataSource<UserTime, UserIq> localDataSource,
-            GadsDataSource<UserTime, UserIq> remoteDataSource
+            GadsDataSource<UserTime, UserIq> remoteDataSource,
+            Executor executor
     ){
         this.localDataSource = localDataSource;
         this.remoteDataSource = remoteDataSource;
+        this.executor = executor;
     }
 
     @Override
@@ -59,14 +65,22 @@ public class DefaultRepository implements GadsRepository{
 
     @Override
     public void updateUserIqDb(List<UserIq> userIqList) {
-        localDataSource.deleteUserIqs();
-        localDataSource.saveUserIqList(userIqList);
+        executor.execute(() -> {
+            localDataSource.deleteUserIqs();
+            localDataSource.saveUserIqList(userIqList);
+        });
+
     }
 
     @Override
     public void updateUserTimeDb(List<UserTime> userTimeList) {
-        localDataSource.deleteUserHours();
-        localDataSource.saveUserTimeList(userTimeList);
+
+        executor.execute(() -> {
+            localDataSource.deleteUserHours();
+            localDataSource.saveUserTimeList(userTimeList);
+            LogHelper.log(TAG, "data is saved");
+        });
+
     }
 
 }

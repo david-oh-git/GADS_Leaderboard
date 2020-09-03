@@ -25,16 +25,16 @@
 package io.audioshinigami.feature_timelist;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.audioshinigami.data_gads.utility.LogHelper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import io.audioshinigami.data_gads.ServiceLocator;
 import io.audioshinigami.feature_timelist.databinding.FragmentLearningListBinding;
 
 /**
@@ -45,23 +45,28 @@ import io.audioshinigami.feature_timelist.databinding.FragmentLearningListBindin
 public class LearningListFragment extends Fragment {
 
     private final String TAG = LearningListFragment.class.getSimpleName();
+    private FragmentLearningListBinding binding;
+    private LearningViewModel viewModel;
 
     public LearningListFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        viewModel = new ViewModelProvider(this, new LearningViewModelFactory(ServiceLocator.provideGadsRepository(requireContext())))
+                .get(LearningViewModel.class);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentLearningListBinding binding = FragmentLearningListBinding.inflate(inflater);
+        binding = FragmentLearningListBinding.inflate(inflater);
         binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.setViewModel( viewModel );
 
         return binding.getRoot();
     }
@@ -69,7 +74,33 @@ public class LearningListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LogHelper.log(TAG, "Fragment is here");
+
+        setUpViews();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        viewModel.loadUserHours(true);
+    }
+
+    private void setUpViews(){
+        setUpRecyclerView();
+        setUpRefreshLayout();
+
+    }
+
+    private void setUpRefreshLayout() {
+
+    }
+
+    private void setUpRecyclerView() {
+        final UserTimeAdaptor adaptor = new UserTimeAdaptor();
+
+        binding.recyclerView.setAdapter(adaptor);
+
+        viewModel.userList.observe(this, adaptor::submitList);
     }
 
     /**

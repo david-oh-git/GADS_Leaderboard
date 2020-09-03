@@ -29,12 +29,14 @@ import java.util.List;
 import io.audioshinigami.data_gads.data.GadsDataSource;
 import io.audioshinigami.data_gads.data.UserIq;
 import io.audioshinigami.data_gads.data.UserTime;
+import io.audioshinigami.data_gads.utility.LogHelper;
 import io.reactivex.rxjava3.core.Single;
 
 public class LocalDataSource implements GadsDataSource<UserTime,UserIq> {
 
     private UserIQDao userIQDao;
     private UserTimeDao userTimeDao;
+    private final String TAG = LocalDataSource.class.getSimpleName();
 
     public LocalDataSource(UserIQDao userIQDao, UserTimeDao userTimedao){
         this.userIQDao = userIQDao;
@@ -43,7 +45,20 @@ public class LocalDataSource implements GadsDataSource<UserTime,UserIq> {
 
     @Override
     public Single<List<UserTime>> getUserHours() {
-        return Single.create(emitter -> emitter.onSuccess(userTimeDao.getTimeList()));
+        return Single.create( emitter -> {
+
+            try {
+                List<UserTime> userTimeList = userTimeDao.getTimeList();
+
+                emitter.onSuccess( userTimeList);
+            }
+            catch (Throwable throwable){
+                LogHelper.log(TAG, "Error getting data from DB");
+                LogHelper.log(TAG, "Error message is: " + throwable.getMessage());
+
+                emitter.onError(throwable);
+            }
+        });
     }
 
     @Override

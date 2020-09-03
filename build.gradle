@@ -55,6 +55,8 @@ buildscript {
             hamcrest: '2.2',
             robolectric: '4.3.1',
             material: '1.2.0',
+            glide: '4.11.0' ,
+            swipe_refresh_layout: '1.1.0'
     ]
 
     dependencies {
@@ -92,7 +94,10 @@ buildscript {
             truth: "com.google.truth:truth:$versions.truth" ,
             hamcrest_lib: "org.hamcrest:hamcrest-library:$versions.hamcrest",
             hamcrest: "org.hamcrest:hamcrest:$versions.hamcrest" ,
-            material: "com.google.android.material:material:$versions.material"
+            material: "com.google.android.material:material:$versions.material" ,
+            glide: "com.github.bumptech.glide:glide:$versions.glide" ,
+            glide_compiler : "com.github.bumptech.glide:compiler:$versions.glide" ,
+            swipe_refresh_layout: "androidx.swiperefreshlayout:swiperefreshlayout:$versions.swipe_refresh_layout"
     ]
 }
 

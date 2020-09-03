@@ -32,6 +32,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import io.audioshinigami.data_gads.data.UserTime;
 import io.audioshinigami.feature_timelist.databinding.RviewItemBinding;
 
@@ -75,6 +77,12 @@ public class UserTimeAdaptor extends ListAdapter<UserTime, UserTimeAdaptor.UserT
         }
 
         public void bind(UserTime userTime){
+
+            Glide.with(binding.getRoot().getContext())
+                    .load(userTime.badgeUrl)
+                    .centerCrop()
+                    .into(binding.userImage);
+
             binding.setVariable(BR.user, userTime);
             binding.executePendingBindings();
         }
