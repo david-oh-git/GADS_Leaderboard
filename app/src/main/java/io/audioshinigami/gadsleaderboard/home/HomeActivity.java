@@ -74,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.viewPager.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
         binding.viewPager.setAdapter( adaptor );
 
+
         new TabLayoutMediator(binding.tabLayout, binding.viewPager,
                 ((tab, position) -> {
 

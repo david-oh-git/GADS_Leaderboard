@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ MIT License
   ~
@@ -23,9 +24,5 @@
   -->
 
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="user_image_desc">Image of the user</string>
-
+    <dimen name="item_border_margin">8dp</dimen>
 </resources>

@@ -22,40 +22,22 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.gadsleaderboard.home;
+package io.audioshinigami.feature_iqlist;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.databinding.BindingAdapter;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import io.audioshinigami.feature_iqlist.SkillIqFragment;
-import io.audioshinigami.feature_timelist.LearningListFragment;
+public class ViewBindings {
 
-public class HomePagerAdaptor extends FragmentStateAdapter {
+    private ViewBindings(){}
 
-    public HomePagerAdaptor(@NonNull FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
-    }
-
-    @NonNull
-    @Override
-    public Fragment createFragment(int position) {
-        switch (position){
-            case 0:
-                return LearningListFragment.newInstance();
-
-            case 1:
-                return SkillIqFragment.newInstance();
-
-            default:
-                return null;
-        }
-    }
-
-
-    @Override
-    public int getItemCount() {
-        return 2;
+    /**
+     * Loads data when the pull-to-refresh is triggered.
+     *
+     * Creates the `android:onRefresh` for a [SwipeRefreshLayout].
+     */
+    @BindingAdapter("android:onRefresh")
+    public static void setOnRefreshListener(SwipeRefreshLayout swipeLayout, SkillIqViewModel viewModel){
+        swipeLayout.setOnRefreshListener(() -> viewModel.loadUserIq(true));
     }
 }

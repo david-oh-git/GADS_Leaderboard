@@ -22,9 +22,8 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.feature_timelist;
+package io.audioshinigami.feature_iqlist;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -33,20 +32,20 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.List;
 
 import io.audioshinigami.data_gads.data.GadsRepository;
-import io.audioshinigami.data_gads.data.UserTime;
+import io.audioshinigami.data_gads.data.UserIq;
 import io.audioshinigami.data_gads.utility.LogHelper;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class LearningViewModel extends ViewModel {
+public class SkillIqViewModel extends ViewModel {
 
     private final GadsRepository repository;
-    private final String TAG = LearningViewModel.class.getSimpleName();
+    private final String TAG = SkillIqViewModel.class.getSimpleName();
 
     private Boolean hasFailedApiTries = false;
 
-    public LearningViewModel(GadsRepository repository){
+    public SkillIqViewModel(GadsRepository repository) {
         super();
         this.repository = repository;
     }
@@ -54,41 +53,35 @@ public class LearningViewModel extends ViewModel {
     private final MutableLiveData<Boolean> _isDataLoading = new MutableLiveData<>();
     public final LiveData<Boolean> isDataLoading = _isDataLoading;
 
-    private final MutableLiveData<List<UserTime>> _userList = new MutableLiveData<>();
-    public final LiveData<List<UserTime>> userList = _userList;
+    private MutableLiveData<List<UserIq>> _userIqList = new MutableLiveData<>();
+    LiveData<List<UserIq>> userIqList = _userIqList;
 
-    /**
-     *
-     * @param value booleans that determines if data is from API call or DB
-     */
-    public void loadUserHours(Boolean value){
+    public void loadUserIq(Boolean value){
 
         _isDataLoading.postValue(true);
 
-        repository.getUserHours(value)
+        repository.getUserIqs(value)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<List<UserTime>>() {
+                .subscribe(new DisposableSingleObserver<List<UserIq>>() {
                     @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<UserTime> userTimes) {
-                        _userList.postValue(userTimes);
+                    public void onSuccess(@NonNull List<UserIq> userIqs) {
+                        _userIqList.postValue(userIqs);
                         _isDataLoading.postValue(false);
 
                         // saves userList to DB only when call is from API
                         if(value){
-                            repository.updateUserTimeDb(userTimes);
+                            repository.updateUserIqDb(userIqs);
                             hasFailedApiTries = false;
                         }
-
                     }
 
                     @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         LogHelper.log(TAG, " Error getting data");
                         // if API call fails get data for DB
                         if (!hasFailedApiTries){
                             hasFailedApiTries = true;
-                            loadUserHours(false);
+                            loadUserIq(false);
                         }
 
                         _isDataLoading.postValue(false);
@@ -97,19 +90,18 @@ public class LearningViewModel extends ViewModel {
     }
 }
 
-
-class LearningViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+class SkillIqViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final GadsRepository repository;
 
-    public LearningViewModelFactory(GadsRepository repository) {
+    public SkillIqViewModelFactory(GadsRepository repository) {
         super();
         this.repository = repository;
     }
 
-    @NonNull
+    @androidx.annotation.NonNull
     @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new LearningViewModel(repository);
+    public <T extends ViewModel> T create(@androidx.annotation.NonNull Class<T> modelClass) {
+        return (T) new SkillIqViewModel(repository);
     }
 }

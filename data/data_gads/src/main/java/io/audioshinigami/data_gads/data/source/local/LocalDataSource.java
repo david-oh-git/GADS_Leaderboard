@@ -63,7 +63,17 @@ public class LocalDataSource implements GadsDataSource<UserTime,UserIq> {
 
     @Override
     public Single<List<UserIq>> getUserIqs() {
-        return Single.create(emitter -> emitter.onSuccess(userIQDao.getIqList()));
+        return Single.create(emitter -> {
+            try {
+                List<UserIq> userIqList = userIQDao.getIqList();
+                emitter.onSuccess(userIqList);
+            }catch ( Throwable throwable){
+                LogHelper.log(TAG, "Error getting data from DB");
+                LogHelper.log(TAG, "Error message is: " + throwable.getMessage());
+
+                emitter.onError(throwable);
+            }
+        });
     }
 
     @Override

@@ -61,6 +61,7 @@ dependencies {
 
     implementation project(':data:data_gads')
     implementation project(':features:feature_timelist')
+    implementation project(':features:feature_iqlist')
 
     implementation deps.appcompat
     implementation deps.constraintlayout
