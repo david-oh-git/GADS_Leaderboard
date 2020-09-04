@@ -25,12 +25,15 @@
 package io.audioshinigami.gadsleaderboard.home;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.Objects;
 
 import io.audioshinigami.data_gads.utility.LogHelper;
 import io.audioshinigami.gadsleaderboard.R;
@@ -39,6 +42,13 @@ import io.audioshinigami.gadsleaderboard.databinding.ActivityHomeBinding;
 public class HomeActivity extends AppCompatActivity {
 
     private final String TAG = HomeActivity.class.getSimpleName();
+    private final SubmitButtonClickListener _listener = new SubmitButtonClickListener() {
+        @Override
+        public void onClicked() {
+            // TODO launch Submit Activity
+            Toast.makeText(getApplicationContext(), "Hello punk bitch", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     private  ActivityHomeBinding binding;
     @Override
@@ -50,6 +60,9 @@ public class HomeActivity extends AppCompatActivity {
                 R.layout.activity_home
         );
         binding.setLifecycleOwner(this);
+        binding.setListener(_listener);
+
+//        Objects.requireNonNull(getSupportActionBar()).setCustomView();
 
         LogHelper.log(TAG, "HomeAct onCreate");
     }
