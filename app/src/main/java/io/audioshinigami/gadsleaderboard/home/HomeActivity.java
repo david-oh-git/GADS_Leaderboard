@@ -24,8 +24,8 @@
 
 package io.audioshinigami.gadsleaderboard.home;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -33,19 +33,15 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.Objects;
-
 import io.audioshinigami.data_gads.utility.LogHelper;
 import io.audioshinigami.gadsleaderboard.R;
 import io.audioshinigami.gadsleaderboard.databinding.ActivityHomeBinding;
+import io.audioshinigami.gadsleaderboard.submit.SubmitActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
     private final String TAG = HomeActivity.class.getSimpleName();
-    private final SubmitButtonClickListener _listener = () -> {
-        // TODO launch Submit Activity
-        Toast.makeText(getApplicationContext(), "To be Implemented", Toast.LENGTH_SHORT).show();
-    };
+    private final SubmitButtonClickListener _listener = () -> startActivity( new Intent(this, SubmitActivity.class));
 
     private  ActivityHomeBinding binding;
     @Override

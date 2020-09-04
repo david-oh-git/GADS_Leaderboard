@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ MIT License
   ~
@@ -15,7 +16,7 @@
   ~
   ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
   ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -23,17 +24,7 @@
   -->
 
 <resources>
-    <string name="app_name">GADS Leaderboard</string>
-    <string name="splash_screen_img_desc">Gads image for splash screen</string>
-    <string name="learning_tab_tile">Learning Leaders</string>
-    <string name="iq_tab_title">Skill IQ Leaders</string>
-    <string name="app_bar_submit">Submit</string>
-    <string name="app_bar_title">LeaderBoard</string>
-    <string name="gads_app_bar_banner">GADS app bar banner</string>
-    <string name="first_name_hint">First Name</string>
-    <string name="last_name_hint">Last Name</string>
-    <string name="project_submission">Project Submission</string>
-    <string name="email_address">Email Address</string>
-    <string name="project_url_on_github">Project URL on Github</string>
-    <string name="submit">Submit</string>
+    <dimen name="border">8dp</dimen>
+    <dimen name="submit_text_size">20sp</dimen>
+    <dimen name="start_padding">8dp</dimen>
 </resources>
