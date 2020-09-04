@@ -42,12 +42,9 @@ import io.audioshinigami.gadsleaderboard.databinding.ActivityHomeBinding;
 public class HomeActivity extends AppCompatActivity {
 
     private final String TAG = HomeActivity.class.getSimpleName();
-    private final SubmitButtonClickListener _listener = new SubmitButtonClickListener() {
-        @Override
-        public void onClicked() {
-            // TODO launch Submit Activity
-            Toast.makeText(getApplicationContext(), "Hello punk bitch", Toast.LENGTH_SHORT).show();
-        }
+    private final SubmitButtonClickListener _listener = () -> {
+        // TODO launch Submit Activity
+        Toast.makeText(getApplicationContext(), "To be Implemented", Toast.LENGTH_SHORT).show();
     };
 
     private  ActivityHomeBinding binding;
