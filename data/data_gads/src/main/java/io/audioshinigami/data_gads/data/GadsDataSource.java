@@ -26,13 +26,9 @@ package io.audioshinigami.data_gads.data;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.core.Single;
+import retrofit2.Call;
 
 public interface GadsDataSource<T,I> {
-
-    Single<List<UserTime>> getUserHours();
-
-    Single<List<UserIq>> getUserIqs();
 
 
     void saveUserTime(T obj);
@@ -50,5 +46,13 @@ public interface GadsDataSource<T,I> {
     void deleteUserHours();
 
     void deleteUserIqs();
+
+    List<UserTime> getUserList();
+
+    List<UserIq> getSkillIqList();
+
+    Call<List<UserTime>> getUserHours();
+
+    Call<List<UserIq>> getUserIqs();
 
 }

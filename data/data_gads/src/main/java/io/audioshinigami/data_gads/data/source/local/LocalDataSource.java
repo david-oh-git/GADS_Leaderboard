@@ -30,7 +30,7 @@ import io.audioshinigami.data_gads.data.GadsDataSource;
 import io.audioshinigami.data_gads.data.UserIq;
 import io.audioshinigami.data_gads.data.UserTime;
 import io.audioshinigami.data_gads.utility.LogHelper;
-import io.reactivex.rxjava3.core.Single;
+import retrofit2.Call;
 
 public class LocalDataSource implements GadsDataSource<UserTime,UserIq> {
 
@@ -44,36 +44,35 @@ public class LocalDataSource implements GadsDataSource<UserTime,UserIq> {
     }
 
     @Override
-    public Single<List<UserTime>> getUserHours() {
-        return Single.create( emitter -> {
-
-            try {
-                List<UserTime> userTimeList = userTimeDao.getTimeList();
-
-                emitter.onSuccess( userTimeList);
-            }
-            catch (Throwable throwable){
-                LogHelper.log(TAG, "Error getting data from DB");
-                LogHelper.log(TAG, "Error message is: " + throwable.getMessage());
-
-                emitter.onError(throwable);
-            }
-        });
+    public List<UserTime> getUserList() {
+        try {
+            return userTimeDao.getTimeList();
+        }catch (Exception e){
+            LogHelper.log(TAG, e.getMessage());
+            return null;
+        }
     }
 
     @Override
-    public Single<List<UserIq>> getUserIqs() {
-        return Single.create(emitter -> {
-            try {
-                List<UserIq> userIqList = userIQDao.getIqList();
-                emitter.onSuccess(userIqList);
-            }catch ( Throwable throwable){
-                LogHelper.log(TAG, "Error getting data from DB");
-                LogHelper.log(TAG, "Error message is: " + throwable.getMessage());
+    public List<UserIq> getSkillIqList() {
+        try {
+            return userIQDao.getIqList();
+        }catch (Exception e){
+            LogHelper.log(TAG, e.getMessage());
+            return null;
+        }
+    }
 
-                emitter.onError(throwable);
-            }
-        });
+    @Override
+    public Call<List<UserTime>> getUserHours() {
+        // Not required
+        return null;
+    }
+
+    @Override
+    public Call<List<UserIq>> getUserIqs() {
+        // Not required
+        return null;
     }
 
     @Override

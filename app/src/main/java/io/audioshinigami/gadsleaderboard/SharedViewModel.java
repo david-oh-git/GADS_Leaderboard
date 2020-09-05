@@ -30,21 +30,15 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import io.audioshinigami.data_gads.data.DefaultRepository;
 import io.audioshinigami.data_gads.data.GadsRepository;
 import io.audioshinigami.data_gads.data.UserIq;
 import io.audioshinigami.data_gads.data.UserTime;
-import io.audioshinigami.data_gads.utility.LogHelper;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.observers.DisposableSingleObserver;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SharedViewModel extends ViewModel {
 
     private final GadsRepository repository;
     private final String TAG = SharedViewModel.class.getSimpleName();
-
-    private Boolean hasHoursApiCallFailed = false;
-    private Boolean hasSkillIqApiCallFailed = false;
 
     private final MutableLiveData<Boolean> _isLearningHoursLoading = new MutableLiveData<>();
     public final LiveData<Boolean> isLearningHoursLoading = _isLearningHoursLoading;
@@ -61,74 +55,55 @@ public class SharedViewModel extends ViewModel {
     public SharedViewModel(GadsRepository repository) {
         super();
         this.repository = repository;
+
+        init();
+    }
+
+    public void init(){
+        repository.getExecutor().execute( () -> {
+            _userIqList.postValue( repository.getSkillIqs());
+            _userList.postValue( repository.getUserHours() );
+        });
+
+        repository.setUpdateActionListener(new DefaultRepository.UpdateDataActionListener() {
+            @Override
+            public void setUserHourIsLoading(Boolean value) {
+                _isLearningHoursLoading.postValue(value);
+            }
+
+            @Override
+            public void setSkillIqIsLoading(Boolean value) {
+                _isSkillIqLoading.postValue(value);
+            }
+
+            @Override
+            public void updateUserHours() {
+                repository.getExecutor().execute(() -> {
+                    _userList.postValue( repository.getUserHours() );
+                });
+            }
+
+            @Override
+            public void updateSkillIq() {
+                repository.getExecutor().execute(() -> {
+                    _userIqList.postValue( repository.getSkillIqs());
+                });
+            }
+        });
     }
 
     public void loadUserHours(Boolean value){
 
         _isLearningHoursLoading.postValue(true);
 
-        repository.getUserHours(value)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<List<UserTime>>() {
-                    @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<UserTime> userTimes) {
-                        _userList.postValue(userTimes);
-                        _isLearningHoursLoading.postValue(false);
-
-                        // saves userList to DB only when call is from API
-                        if(value){
-                            repository.updateUserTimeDb(userTimes);
-                            hasHoursApiCallFailed = false;
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        LogHelper.log(TAG, " Error getting data");
-                        // if API call fails get data for DB
-                        if (!hasHoursApiCallFailed){
-                            hasHoursApiCallFailed = true;
-                            loadUserHours(false);
-                        }
-
-                        _isLearningHoursLoading.postValue(false);
-                    }
-                });
+        repository.getUserHours(value);
     }
 
     public void loadUserIq(Boolean value){
 
         _isSkillIqLoading.postValue(true);
 
-        repository.getUserIqs(value)
-                .subscribeOn(Schedulers.io())
-                .subscribe(new DisposableSingleObserver<List<UserIq>>() {
-                    @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<UserIq> userIqs) {
-                        _userIqList.postValue(userIqs);
-                        _isSkillIqLoading.postValue(false);
-
-                        // saves userList to DB only when call is from API
-                        if(value){
-                            repository.updateUserIqDb(userIqs);
-                            hasSkillIqApiCallFailed = false;
-                        }
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        LogHelper.log(TAG, " Error getting data");
-                        // if API call fails get data for DB
-                        if (!hasSkillIqApiCallFailed){
-                            hasHoursApiCallFailed = true;
-                            loadUserIq(false);
-                        }
-
-                        _isSkillIqLoading.postValue(false);
-                    }
-                });
+        repository.getUserIqs(value);
     }
 }
 

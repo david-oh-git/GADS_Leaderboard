@@ -70,8 +70,5 @@ dependencies {
     annotationProcessor deps.glide_compiler
     // swipefreshlayout
     implementation deps.swipe_refresh_layout
-    // rxjava3
-    implementation deps.rxandroid
-    implementation deps.rxjava
 
 }

@@ -25,17 +25,24 @@
 package io.audioshinigami.data_gads.data;
 
 import java.util.List;
-
-import io.reactivex.rxjava3.core.Single;
+import java.util.concurrent.Executor;
 
 public interface GadsRepository {
 
-    Single<List<UserTime>> getUserHours(Boolean update);
+    void getUserHours(Boolean update);
 
-    Single<List<UserIq>> getUserIqs(Boolean update);
+    void getUserIqs(Boolean update);
 
     void updateUserIqDb(List<UserIq> userIqList);
 
     void updateUserTimeDb(List<UserTime> userTimeList);
+
+    List<UserTime> getUserHours();
+
+    List<UserIq> getSkillIqs();
+
+    Executor getExecutor();
+
+    void setUpdateActionListener(DefaultRepository.UpdateDataActionListener listener);
 
 }

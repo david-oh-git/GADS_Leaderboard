@@ -28,6 +28,8 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import java.util.concurrent.Executor;
+
 import io.audioshinigami.data_gads.background.BackGroundExecutor;
 import io.audioshinigami.data_gads.data.DefaultRepository;
 import io.audioshinigami.data_gads.data.GadsDataSource;

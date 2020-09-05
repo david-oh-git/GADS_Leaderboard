@@ -24,20 +24,15 @@
 
 package io.audioshinigami.data_gads.data.source.remote;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 import io.audioshinigami.data_gads.data.GadsDataSource;
 import io.audioshinigami.data_gads.data.UserIq;
 import io.audioshinigami.data_gads.data.UserTime;
 import io.audioshinigami.data_gads.network.GadsApiService;
-import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class RemoteDataSource implements GadsDataSource<UserTime,UserIq> {
+public class RemoteDataSource implements GadsDataSource<UserTime, UserIq> {
 
     private GadsApiService apiService;
 
@@ -46,42 +41,25 @@ public class RemoteDataSource implements GadsDataSource<UserTime,UserIq> {
     }
 
     @Override
-    public Single<List<UserTime>> getUserHours() {
-        return Single.create(emitter -> {
-            Call<List<UserTime>> call = apiService.getUserHours();
-
-            call.enqueue(new Callback<List<UserTime>>() {
-                @Override
-                public void onResponse(@NotNull Call<List<UserTime>> call, @NotNull Response<List<UserTime>> response) {
-
-                    emitter.onSuccess( response.body() );
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<List<UserTime>> call, @NotNull Throwable t) {
-                    emitter.onError( t);
-                }
-            });
-        });
+    public List<UserTime> getUserList() {
+        // Not required
+        return null;
     }
 
     @Override
-    public Single<List<UserIq>> getUserIqs() {
-        return Single.create( emitter -> {
-            Call<List<UserIq>> call = apiService.getUserIqs();
+    public List<UserIq> getSkillIqList() {
+        // Not required
+        return null;
+    }
 
-            call.enqueue(new Callback<List<UserIq>>() {
-                @Override
-                public void onResponse(@NotNull Call<List<UserIq>> call, @NotNull Response<List<UserIq>> response) {
-                    emitter.onSuccess(response.body());
-                }
+    @Override
+    public Call<List<UserTime>> getUserHours() {
+        return apiService.getUserHours();
+    }
 
-                @Override
-                public void onFailure(@NotNull Call<List<UserIq>> call, @NotNull Throwable t) {
-                    emitter.onError(t);
-                }
-            });
-        });
+    @Override
+    public Call<List<UserIq>> getUserIqs() {
+        return apiService.getUserIqs();
     }
 
     @Override

@@ -40,11 +40,11 @@ public class Resource<T> {
         return new Resource<>(Status.SUCCESS, data, null);
     }
 
-    public static <E> Resource<E> error(String message, E data){
+    public static Resource<Exception> error(String message, Exception data){
         return new Resource<>(Status.ERROR, data, message);
     }
 
-    public static <L> Resource<L> loading(L data){
-        return new Resource<>(Status.LOADING, data, null);
+    public static  Resource<Void> loading(){
+        return new Resource<Void>(Status.LOADING, null, null);
     }
 }

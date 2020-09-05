@@ -24,18 +24,23 @@
 
 package io.audioshinigami.data_gads.data;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 import java.util.concurrent.Executor;
 
 import io.audioshinigami.data_gads.utility.LogHelper;
-import io.reactivex.rxjava3.core.Single;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class DefaultRepository implements GadsRepository{
+public class DefaultRepository implements GadsRepository {
 
     private final GadsDataSource<UserTime, UserIq> localDataSource;
     private final GadsDataSource<UserTime, UserIq> remoteDataSource;
     private final Executor executor;
     private final String TAG = DefaultRepository.class.getSimpleName();
+    private UpdateDataActionListener listener;
 
     public DefaultRepository(
             GadsDataSource<UserTime, UserIq> localDataSource,
@@ -48,19 +53,66 @@ public class DefaultRepository implements GadsRepository{
     }
 
     @Override
-    public Single<List<UserTime>> getUserHours(Boolean update) {
-        if(!update)
-            return localDataSource.getUserHours();
-
-        return remoteDataSource.getUserHours();
+    public Executor getExecutor() {
+        return executor;
     }
 
     @Override
-    public Single<List<UserIq>> getUserIqs(Boolean update) {
-        if(!update)
-            return localDataSource.getUserIqs();
+    public List<UserTime> getUserHours() {
+        return localDataSource.getUserList();
+    }
 
-        return remoteDataSource.getUserIqs();
+    @Override
+    public List<UserIq> getSkillIqs() {
+        return localDataSource.getSkillIqList();
+    }
+
+    @Override
+    public void getUserHours(Boolean update) {
+
+        remoteDataSource.getUserHours()
+                .enqueue(new Callback<List<UserTime>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<UserTime>> call, @NonNull Response<List<UserTime>> response) {
+                        updateUserTimeDb( response.body());
+                        if(listener != null)
+                            listener.setUserHourIsLoading(false);
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<UserTime>> call, @NonNull Throwable t) {
+                        if(listener != null)
+                            listener.setUserHourIsLoading(false);
+                        // Log error
+                        LogHelper.log(TAG, t.getMessage());
+                    }
+                });
+
+    }
+
+    @Override
+    public void getUserIqs(Boolean update) {
+
+        remoteDataSource.getUserIqs()
+                .enqueue(new Callback<List<UserIq>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<UserIq>> call, @NonNull Response<List<UserIq>> response) {
+                        updateUserIqDb(response.body());
+                        if(listener != null)
+                            listener.setSkillIqIsLoading(false);
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<UserIq>> call, @NonNull Throwable t) {
+                        // Log error
+                        LogHelper.log(TAG, t.getMessage());
+                        if(listener != null)
+                            listener.setSkillIqIsLoading(false);
+                    }
+                });
+
     }
 
     @Override
@@ -68,6 +120,7 @@ public class DefaultRepository implements GadsRepository{
         executor.execute(() -> {
             localDataSource.deleteUserIqs();
             localDataSource.saveUserIqList(userIqList);
+            listener.updateSkillIq();
         });
 
     }
@@ -78,9 +131,26 @@ public class DefaultRepository implements GadsRepository{
         executor.execute(() -> {
             localDataSource.deleteUserHours();
             localDataSource.saveUserTimeList(userTimeList);
+            listener.updateUserHours();
             LogHelper.log(TAG, "data is saved");
         });
 
+    }
+
+    @Override
+    public void setUpdateActionListener(UpdateDataActionListener listener) {
+        this.listener = listener;
+    }
+
+    public interface UpdateDataActionListener {
+
+        void setUserHourIsLoading(Boolean value);
+
+        void setSkillIqIsLoading(Boolean value);
+
+        void updateUserHours();
+
+        void updateSkillIq();
     }
 
 }
