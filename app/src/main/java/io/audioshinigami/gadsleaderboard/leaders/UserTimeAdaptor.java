@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.feature_iqlist;
+package io.audioshinigami.gadsleaderboard.leaders;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -34,67 +34,70 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import io.audioshinigami.data_gads.data.UserIq;
-import io.audioshinigami.feature_iqlist.databinding.RviewIqItemBinding;
+import io.audioshinigami.data_gads.data.UserTime;
+import io.audioshinigami.gadsleaderboard.BR;
+import io.audioshinigami.gadsleaderboard.databinding.HourItemBinding;
 
-public class UserIqAdaptor extends ListAdapter<UserIq , UserIqAdaptor.UserIqViewHolder> {
+public class UserTimeAdaptor extends ListAdapter<UserTime, UserTimeAdaptor.UserTimeViewHolder> {
 
-    private static final DiffUtil.ItemCallback<UserIq> callback = new DiffUtil.ItemCallback<UserIq>() {
+
+    private static final DiffUtil.ItemCallback<UserTime> callback = new DiffUtil.ItemCallback<UserTime>() {
         @Override
-        public boolean areItemsTheSame(@NonNull UserIq oldItem, @NonNull UserIq newItem) {
+        public boolean areItemsTheSame(@NonNull UserTime oldItem, @NonNull UserTime newItem) {
             return oldItem.uid == newItem.uid;
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull UserIq oldItem, @NonNull UserIq newItem) {
+        public boolean areContentsTheSame(@NonNull UserTime oldItem, @NonNull UserTime newItem) {
             return oldItem.uid == newItem.uid && oldItem.name.equals(newItem.name) && oldItem.country.equals(newItem.country);
         }
     };
 
-    protected UserIqAdaptor() {
+    protected UserTimeAdaptor(){
         super(callback);
     }
 
     @NonNull
     @Override
-    public UserIqViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UserTimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return createViewHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserIqViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UserTimeViewHolder holder, int position) {
         holder.bind( getItem(position));
     }
 
-    class UserIqViewHolder extends RecyclerView.ViewHolder {
+    class UserTimeViewHolder extends RecyclerView.ViewHolder {
 
-        private final RviewIqItemBinding binding;
+        private final HourItemBinding binding;
 
-        public UserIqViewHolder(@NonNull RviewIqItemBinding binding) {
+        public UserTimeViewHolder(@NonNull HourItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public void bind(UserIq userIq){
+        public void bind(UserTime userTime){
 
             Glide.with(binding.getRoot().getContext())
-                    .load(userIq.badgeUrl)
+                    .load(userTime.badgeUrl)
                     .centerCrop()
                     .into(binding.userImage);
 
-            binding.setVariable(BR.user, userIq);
+            binding.setVariable(BR.user, userTime);
             binding.executePendingBindings();
         }
 
         public void clear(){
             binding.unbind();
         }
+
     }
 
-    private UserIqViewHolder createViewHolder(ViewGroup parent){
+    private UserTimeViewHolder createViewHolder(ViewGroup parent){
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        RviewIqItemBinding binding = RviewIqItemBinding.inflate(layoutInflater, parent, false);
+        HourItemBinding binding = HourItemBinding.inflate(layoutInflater, parent, false);
 
-        return new UserIqViewHolder(binding);
+        return new UserTimeViewHolder(binding);
     }
 }

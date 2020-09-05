@@ -22,48 +22,50 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.feature_timelist;
+package io.audioshinigami.gadsleaderboard;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
 import io.audioshinigami.data_gads.data.GadsRepository;
+import io.audioshinigami.data_gads.data.UserIq;
 import io.audioshinigami.data_gads.data.UserTime;
 import io.audioshinigami.data_gads.utility.LogHelper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class LearningViewModel extends ViewModel {
+public class SharedViewModel extends ViewModel {
 
     private final GadsRepository repository;
-    private final String TAG = LearningViewModel.class.getSimpleName();
+    private final String TAG = SharedViewModel.class.getSimpleName();
 
-    private Boolean hasFailedApiTries = false;
+    private Boolean hasHoursApiCallFailed = false;
+    private Boolean hasSkillIqApiCallFailed = false;
 
-    public LearningViewModel(GadsRepository repository){
-        super();
-        this.repository = repository;
-    }
+    private final MutableLiveData<Boolean> _isLearningHoursLoading = new MutableLiveData<>();
+    public final LiveData<Boolean> isLearningHoursLoading = _isLearningHoursLoading;
 
-    private final MutableLiveData<Boolean> _isDataLoading = new MutableLiveData<>();
-    public final LiveData<Boolean> isDataLoading = _isDataLoading;
+    private final MutableLiveData<Boolean> _isSkillIqLoading = new MutableLiveData<>();
+    public final LiveData<Boolean> isSkillIqLoading = _isSkillIqLoading;
+
+    private MutableLiveData<List<UserIq>> _userIqList = new MutableLiveData<>();
+    public final LiveData<List<UserIq>> userIqList = _userIqList;
 
     private final MutableLiveData<List<UserTime>> _userList = new MutableLiveData<>();
     public final LiveData<List<UserTime>> userList = _userList;
 
-    /**
-     *
-     * @param value booleans that determines if data is from API call or DB
-     */
+    public SharedViewModel(GadsRepository repository) {
+        super();
+        this.repository = repository;
+    }
+
     public void loadUserHours(Boolean value){
 
-        _isDataLoading.postValue(true);
+        _isLearningHoursLoading.postValue(true);
 
         repository.getUserHours(value)
                 .subscribeOn(Schedulers.io())
@@ -72,12 +74,12 @@ public class LearningViewModel extends ViewModel {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<UserTime> userTimes) {
                         _userList.postValue(userTimes);
-                        _isDataLoading.postValue(false);
+                        _isLearningHoursLoading.postValue(false);
 
                         // saves userList to DB only when call is from API
                         if(value){
                             repository.updateUserTimeDb(userTimes);
-                            hasFailedApiTries = false;
+                            hasHoursApiCallFailed = false;
                         }
 
                     }
@@ -86,30 +88,47 @@ public class LearningViewModel extends ViewModel {
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         LogHelper.log(TAG, " Error getting data");
                         // if API call fails get data for DB
-                        if (!hasFailedApiTries){
-                            hasFailedApiTries = true;
+                        if (!hasHoursApiCallFailed){
+                            hasHoursApiCallFailed = true;
                             loadUserHours(false);
                         }
 
-                        _isDataLoading.postValue(false);
+                        _isLearningHoursLoading.postValue(false);
+                    }
+                });
+    }
+
+    public void loadUserIq(Boolean value){
+
+        _isSkillIqLoading.postValue(true);
+
+        repository.getUserIqs(value)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new DisposableSingleObserver<List<UserIq>>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<UserIq> userIqs) {
+                        _userIqList.postValue(userIqs);
+                        _isSkillIqLoading.postValue(false);
+
+                        // saves userList to DB only when call is from API
+                        if(value){
+                            repository.updateUserIqDb(userIqs);
+                            hasSkillIqApiCallFailed = false;
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        LogHelper.log(TAG, " Error getting data");
+                        // if API call fails get data for DB
+                        if (!hasSkillIqApiCallFailed){
+                            hasHoursApiCallFailed = true;
+                            loadUserIq(false);
+                        }
+
+                        _isSkillIqLoading.postValue(false);
                     }
                 });
     }
 }
 
-
-class LearningViewModelFactory extends ViewModelProvider.NewInstanceFactory {
-
-    private final GadsRepository repository;
-
-    public LearningViewModelFactory(GadsRepository repository) {
-        super();
-        this.repository = repository;
-    }
-
-    @NonNull
-    @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new LearningViewModel(repository);
-    }
-}

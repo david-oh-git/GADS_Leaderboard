@@ -22,22 +22,26 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.feature_iqlist;
+package io.audioshinigami.gadsleaderboard;
 
-import androidx.databinding.BindingAdapter;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
-public class ViewBindings {
+import io.audioshinigami.data_gads.data.GadsRepository;
 
-    private ViewBindings(){}
+public class SharedViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    /**
-     * Loads data when the pull-to-refresh is triggered.
-     *
-     * Creates the `android:onRefresh` for a [SwipeRefreshLayout].
-     */
-    @BindingAdapter("android:onRefresh")
-    public static void setOnRefreshListener(SwipeRefreshLayout swipeLayout, SkillIqViewModel viewModel){
-        swipeLayout.setOnRefreshListener(() -> viewModel.loadUserIq(true));
+    private final GadsRepository repository;
+
+    public SharedViewModelFactory(GadsRepository repository) {
+        super();
+        this.repository = repository;
+    }
+
+    @NonNull
+    @Override
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        return (T) new SharedViewModel(repository);
     }
 }

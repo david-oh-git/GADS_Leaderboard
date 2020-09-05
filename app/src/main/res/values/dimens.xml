@@ -27,4 +27,5 @@
     <dimen name="border">8dp</dimen>
     <dimen name="submit_text_size">20sp</dimen>
     <dimen name="start_padding">8dp</dimen>
+    <dimen name="item_border_margin">8dp</dimen>
 </resources>

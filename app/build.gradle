@@ -60,11 +60,18 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     implementation project(':data:data_gads')
-    implementation project(':features:feature_timelist')
-    implementation project(':features:feature_iqlist')
 
     implementation deps.appcompat
     implementation deps.constraintlayout
     implementation deps.material
+    // Glide
+    implementation deps.glide
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    annotationProcessor deps.glide_compiler
+    // swipefreshlayout
+    implementation deps.swipe_refresh_layout
+    // rxjava3
+    implementation deps.rxandroid
+    implementation deps.rxjava
 
 }

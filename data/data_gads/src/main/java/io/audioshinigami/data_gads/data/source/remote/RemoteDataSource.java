@@ -15,7 +15,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -28,14 +28,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import io.audioshinigami.data_gads.data.Resource;
-import io.audioshinigami.data_gads.network.GadsApiService;
 import io.audioshinigami.data_gads.data.GadsDataSource;
 import io.audioshinigami.data_gads.data.UserIq;
 import io.audioshinigami.data_gads.data.UserTime;
-import io.reactivex.rxjava3.annotations.NonNull;
+import io.audioshinigami.data_gads.network.GadsApiService;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.core.SingleEmitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -125,38 +122,6 @@ public class RemoteDataSource implements GadsDataSource<UserTime,UserIq> {
     @Override
     public void deleteUserIqs() {
         // Not required
-    }
-
-    //    TODO refactor later
-//    private <T> Single<List<T>> apiResponse( Class<T> classType){
-//        return Single.create( emitter -> {
-//            if(classType.isAssignableFrom(UserTime.class)){
-//                Call<List<UserTime>> call = apiService.getUserHours();
-//
-//                call.enqueue( new GadsRetrofitCallback<List<UserTime>>(emitter));
-//
-//            }
-//        });
-//    }
-
-    private class GadsRetrofitCallback<T> implements Callback<List<T>> {
-
-        private SingleEmitter<@NonNull T> emitter;
-
-        public GadsRetrofitCallback(SingleEmitter<@NonNull T> emitter){
-            this.emitter = emitter;
-        }
-
-
-        @Override
-        public void onResponse(Call<List<T>> call, Response<List<T>> response) {
-            emitter.onSuccess( (T) response.body() );
-        }
-
-        @Override
-        public void onFailure(Call<List<T>> call, Throwable t) {
-            emitter.onError(t);
-        }
     }
 
 }

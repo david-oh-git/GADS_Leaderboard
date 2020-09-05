@@ -22,22 +22,9 @@
  * SOFTWARE.
  */
 
-package io.audioshinigami.feature_timelist;
+package io.audioshinigami.gadsleaderboard.leaders;
 
-import androidx.databinding.BindingAdapter;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-public class ViewBindings {
-
-    private ViewBindings(){}
-
-    /**
-     * Loads data when the pull-to-refresh is triggered.
-     *
-     * Creates the `android:onRefresh` for a [SwipeRefreshLayout].
-     */
-    @BindingAdapter("android:onRefresh")
-    public static void setOnRefreshListener(SwipeRefreshLayout swipeLayout, LearningViewModel viewModel){
-        swipeLayout.setOnRefreshListener(() -> viewModel.loadUserHours(true));
-    }
+public enum FragmentType {
+    LEARNING_HOURS,
+    LEARNING_SKILL_IQ
 }
