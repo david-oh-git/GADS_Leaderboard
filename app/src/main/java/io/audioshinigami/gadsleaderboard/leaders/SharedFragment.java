@@ -87,10 +87,10 @@ public class SharedFragment extends Fragment {
     private void loadData() {
         switch (fragmentType){
             case LEARNING_SKILL_IQ:
-                viewModel.loadUserIq(true);
+                viewModel.loadUserIq();
                 break;
             case LEARNING_HOURS:
-                viewModel.loadUserHours(true);
+                viewModel.loadUserHours();
                 break;
         }
     }
@@ -113,12 +113,12 @@ public class SharedFragment extends Fragment {
 
     private void setUpSkillsIqSwipeLayout() {
         viewModel.isSkillIqLoading.observe(this, isSkillIQLoading -> binding.swipeRefreshLayout.setRefreshing(isSkillIQLoading));
-        binding.swipeRefreshLayout.setOnRefreshListener(() -> viewModel.loadUserIq(true));
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> viewModel.loadUserIq());
     }
 
     private void setUpLearningHoursSwipeLayout() {
         viewModel.isLearningHoursLoading.observe(this, isHoursLoading -> binding.swipeRefreshLayout.setRefreshing(isHoursLoading) );
-        binding.swipeRefreshLayout.setOnRefreshListener( () -> viewModel.loadUserHours(true) );
+        binding.swipeRefreshLayout.setOnRefreshListener( () -> viewModel.loadUserHours() );
     }
 
     private void setUpRecyclerView() {

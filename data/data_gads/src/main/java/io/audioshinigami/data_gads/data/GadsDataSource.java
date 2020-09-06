@@ -28,6 +28,12 @@ import java.util.List;
 
 import retrofit2.Call;
 
+/**
+ *
+ * @param <T> data type to be stored . [{@link UserTime}]
+ * @param <I> data type to be stored . [{@link UserIq}]
+ */
+
 public interface GadsDataSource<T,I> {
 
 

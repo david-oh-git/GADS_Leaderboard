@@ -24,6 +24,11 @@
 
 package io.audioshinigami.data_gads.data;
 
+/**
+ *  Wrapper for data
+ * @param <T> data type to be Returned
+ */
+
 public class Resource<T> {
 
     final Status status;

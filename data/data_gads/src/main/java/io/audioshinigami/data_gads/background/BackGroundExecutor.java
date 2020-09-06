@@ -26,6 +26,9 @@ package io.audioshinigami.data_gads.background;
 
 import java.util.concurrent.Executor;
 
+/**
+ *  Executor for background tasks
+ */
 public class BackGroundExecutor implements Executor {
 
     @Override

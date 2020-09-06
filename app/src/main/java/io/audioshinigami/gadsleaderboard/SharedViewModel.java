@@ -92,18 +92,18 @@ public class SharedViewModel extends ViewModel {
         });
     }
 
-    public void loadUserHours(Boolean value){
+    public void loadUserHours(){
 
         _isLearningHoursLoading.postValue(true);
 
-        repository.getUserHours(value);
+        repository.updateUserHoursFromApi();
     }
 
-    public void loadUserIq(Boolean value){
+    public void loadUserIq(){
 
         _isSkillIqLoading.postValue(true);
 
-        repository.getUserIqs(value);
+        repository.updateUserIqFromApi();
     }
 }
 

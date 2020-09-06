@@ -34,6 +34,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ *  Implementation of {@link GadsRepository}
+ *
+ */
+
 public class DefaultRepository implements GadsRepository {
 
     private final GadsDataSource<UserTime, UserIq> localDataSource;
@@ -42,6 +47,12 @@ public class DefaultRepository implements GadsRepository {
     private final String TAG = DefaultRepository.class.getSimpleName();
     private UpdateDataActionListener listener;
 
+    /**
+     *
+     * @param localDataSource save and get data from Room DB
+     * @param remoteDataSource get data from API using retrofit
+     * @param executor for running background threads
+     */
     public DefaultRepository(
             GadsDataSource<UserTime, UserIq> localDataSource,
             GadsDataSource<UserTime, UserIq> remoteDataSource,
@@ -68,7 +79,7 @@ public class DefaultRepository implements GadsRepository {
     }
 
     @Override
-    public void getUserHours(Boolean update) {
+    public void updateUserHoursFromApi() {
 
         remoteDataSource.getUserHours()
                 .enqueue(new Callback<List<UserTime>>() {
@@ -92,7 +103,7 @@ public class DefaultRepository implements GadsRepository {
     }
 
     @Override
-    public void getUserIqs(Boolean update) {
+    public void updateUserIqFromApi() {
 
         remoteDataSource.getUserIqs()
                 .enqueue(new Callback<List<UserIq>>() {
@@ -142,14 +153,32 @@ public class DefaultRepository implements GadsRepository {
         this.listener = listener;
     }
 
+    /**
+     *  action listener to update viewModel
+     */
+
     public interface UpdateDataActionListener {
 
+        /**
+         * @param value  f true , inform UI , API is updating user {@link UserTime} from
+         *               database
+         */
         void setUserHourIsLoading(Boolean value);
 
+        /**
+         * @param value  f true , inform UI , API is updating user {@link UserIq} from
+         *               database
+         */
         void setSkillIqIsLoading(Boolean value);
 
+        /**
+         *  informs viewModel of Updates {@link UserTime} data in database
+         */
         void updateUserHours();
 
+        /**
+         *  informs viewModel of Updates {@link UserIq} data in database
+         */
         void updateSkillIq();
     }
 
