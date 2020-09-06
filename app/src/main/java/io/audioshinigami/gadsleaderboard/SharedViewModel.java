@@ -105,5 +105,6 @@ public class SharedViewModel extends ViewModel {
 
         repository.updateUserIqFromApi();
     }
+
 }
 

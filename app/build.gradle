@@ -66,6 +66,7 @@ dependencies {
     implementation deps.material
     // Glide
     implementation deps.glide
+    annotationProcessor deps.glide_compiler
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor deps.glide_compiler
     // swipefreshlayout

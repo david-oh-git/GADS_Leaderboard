@@ -31,7 +31,6 @@ import io.audioshinigami.data_gads.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -77,12 +76,27 @@ public class ApiFactory {
                 .client( provideHttpClient() )
                 .baseUrl(BASE_URL)
                 .addConverterFactory( GsonConverterFactory.create() )
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
+    }
+
+    private static Retrofit retrofitSubmit(){
+
+        String BASE_URL = "https://docs.google.com/forms/d/e/";
+
+        return new Retrofit.Builder()
+                .client( provideHttpClient() )
+                .baseUrl(BASE_URL)
+                .addConverterFactory( GsonConverterFactory.create() )
+                .build();
+
     }
 
     public static synchronized GadsApiService provideGadsApi(){
         return retrofit().create(GadsApiService.class);
+    }
+
+    public static synchronized GadsSubmitApiService provideGadsSubmitApi(){
+        return retrofitSubmit().create(GadsSubmitApiService.class);
     }
 
 }

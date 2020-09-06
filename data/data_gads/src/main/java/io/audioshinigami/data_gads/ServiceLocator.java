@@ -28,12 +28,12 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import java.util.concurrent.Executor;
-
 import io.audioshinigami.data_gads.background.BackGroundExecutor;
 import io.audioshinigami.data_gads.data.DefaultRepository;
+import io.audioshinigami.data_gads.data.GadSubmitRepository;
 import io.audioshinigami.data_gads.data.GadsDataSource;
 import io.audioshinigami.data_gads.data.GadsRepository;
+import io.audioshinigami.data_gads.data.SubmitRepository;
 import io.audioshinigami.data_gads.data.UserIq;
 import io.audioshinigami.data_gads.data.UserTime;
 import io.audioshinigami.data_gads.data.source.local.GadsDatabase;
@@ -53,6 +53,7 @@ public class ServiceLocator {
     private static final String TAG = ServiceLocator.class.getSimpleName();
     private static GadsDatabase gadsDatabase = null;
     private static GadsRepository repository = null;
+    private static GadSubmitRepository submitRepository = null;
 
     public static GadsRepository provideGadsRepository(Context context){
         synchronized (ServiceLocator.class){
@@ -66,6 +67,17 @@ public class ServiceLocator {
             );
 
             return repository;
+        }
+    }
+
+    public static GadSubmitRepository provideSubmitRepository() {
+        synchronized (ServiceLocator.class){
+            if(submitRepository != null)
+                return submitRepository;
+
+            submitRepository = new SubmitRepository(ApiFactory.provideGadsSubmitApi());
+
+            return submitRepository;
         }
     }
 

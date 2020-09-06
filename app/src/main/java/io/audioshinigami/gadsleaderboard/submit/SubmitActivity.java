@@ -29,21 +29,31 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Objects;
 
+import io.audioshinigami.data_gads.ServiceLocator;
 import io.audioshinigami.gadsleaderboard.R;
+import io.audioshinigami.gadsleaderboard.databinding.ActivitySubmitBinding;
 
 public class SubmitActivity extends AppCompatActivity {
+
+    private ActivitySubmitBinding binding;
+    private SubmitViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_submit);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_submit);
+        binding.setLifecycleOwner(this);
+        viewModel = new ViewModelProvider(this, new SubmitViewModelFactory(ServiceLocator.provideSubmitRepository()) )
+                .get(SubmitViewModel.class);
+        binding.setViewModel(viewModel);
+
+        setSupportActionBar(binding.toolbar);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");

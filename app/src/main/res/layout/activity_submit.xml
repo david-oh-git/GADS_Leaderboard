@@ -28,6 +28,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.audioshinigami.gadsleaderboard.submit.SubmitViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,6 +71,7 @@
 
         <EditText
             android:id="@+id/firstName"
+            android:text="@={ viewModel.firstName }"
             android:background="@null"
             android:hint="@string/first_name_hint"
             android:textSize="@dimen/submit_text_size"
@@ -78,6 +86,7 @@
 
         <EditText
             android:id="@+id/lastName"
+            android:text="@={ viewModel.lastName }"
             android:background="@null"
             android:hint="@string/last_name_hint"
             android:textSize="@dimen/submit_text_size"
@@ -92,6 +101,7 @@
         <EditText
             android:id="@+id/email"
             android:background="@null"
+            android:text="@={ viewModel.emailAddress }"
             android:hint="@string/email_address"
             android:layout_marginTop="32dp"
             android:textSize="@dimen/submit_text_size"
@@ -107,6 +117,7 @@
 
         <EditText
             android:id="@+id/github"
+            android:text="@={ viewModel.githubUrl }"
             android:background="@null"
             android:hint="@string/project_url_on_github"
             android:layout_marginTop="32dp"
@@ -128,6 +139,7 @@
             app:layout_constraintTop_toBottomOf="@id/github"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            android:onClick="@{ () -> viewModel.submit() }"
             android:layout_marginTop="64dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
