@@ -48,8 +48,7 @@ public class SubmitViewModel extends ViewModel {
 
     public void submit(){
         SubmitDetails submitDetails = new SubmitDetails(firstName.getValue(), lastName.getValue() ,
-                "+234-805-XXXXXXX", null, "Uyo, Nigeria", emailAddress.getValue(),
-                "+234-803-XXXXXXX", null, null);
+                emailAddress.getValue() , githubUrl.getValue() );
 
         repository.submit(submitDetails);
         LogHelper.log(TAG, "First name is " + firstName.getValue() );

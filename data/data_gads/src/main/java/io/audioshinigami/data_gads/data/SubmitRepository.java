@@ -44,15 +44,19 @@ public class SubmitRepository implements GadSubmitRepository {
 
     @Override
     public void submit(SubmitDetails submitDetails) {
-        apiService.submit(submitDetails)
-                .enqueue(new Callback<SubmitResponse>() {
+        apiService.submit(submitDetails.firstName, submitDetails.lastName, submitDetails.email,
+                submitDetails.track, submitDetails.github )
+                .enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(@NonNull Call<SubmitResponse> call, @NonNull Response<SubmitResponse> response) {
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         LogHelper.log(TAG, "The response was " + response.body() );
+                        LogHelper.log(TAG, "The response code is " + response.code() );
+                        LogHelper.log(TAG, "Successful ? : " + response.isSuccessful() );
+                        LogHelper.log(TAG, "The message is " + response.errorBody() );
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<SubmitResponse> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                         LogHelper.log(TAG, "Error submitting !!!!!! \n Error msg :  " + t.getMessage()  );
                     }
                 });
