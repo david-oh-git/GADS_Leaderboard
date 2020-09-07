@@ -32,10 +32,9 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
 import io.audioshinigami.data_gads.data.UserIq;
 import io.audioshinigami.gadsleaderboard.BR;
+import io.audioshinigami.gadsleaderboard.GlideApp;
 import io.audioshinigami.gadsleaderboard.databinding.SkillIqItemBinding;
 
 public class UserIqAdaptor extends ListAdapter<UserIq , UserIqAdaptor.UserIqViewHolder> {
@@ -78,10 +77,11 @@ public class UserIqAdaptor extends ListAdapter<UserIq , UserIqAdaptor.UserIqView
 
         public void bind(UserIq userIq){
 
-            Glide.with(binding.getRoot().getContext())
+            GlideApp.with(binding.getRoot().getContext())
                     .load(userIq.badgeUrl)
                     .centerCrop()
                     .into(binding.userImage);
+
 
             binding.setVariable(BR.user, userIq);
             binding.executePendingBindings();
